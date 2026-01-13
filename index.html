@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源导航站</title>
+    <style>
+        /* 全局样式 - 背景图片改为本地image/bg.jpg，其余样式优化 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", Arial, sans-serif; /* 适配中文显示 */
+        }
+        body {
+            background: url("image/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            min-height: 100vh; /* 保证页面铺满屏幕 */
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            z-index: -1;
+        }
+
+        /* 导航栏样式（蓝色系，优化hover效果） */
+        .nav-bar {
+            background-color: #165DFF;
+            padding: 1rem 0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        }
+        .nav-list {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap; /* 适配移动端 */
+        }
+        .nav-item button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .nav-item button:hover, .nav-item button.active {
+            background-color: #0E42D2;
+            transform: translateY(-2px); /* 轻微上浮，提升交互感 */
+        }
+
+        /* 页面容器样式（优化响应式 + 透明背景） */
+        .page-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: none;
+            background-color: transparent; /* 核心：页面容器透明 */
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            text-align: center; /* 容器内元素默认居中 */
+        }
+        .page-container.active {
+            display: block;
+        }
+
+        /* 资源卡片网格（适配移动端） */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 响应式列数 */
+            gap: 2rem;
+            margin: 2rem 0;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 900px;
+        }
+        .resource-card {
+            background-color: transparent; /* 核心：卡片背景透明 */
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* 轻微阴影提升层次 */
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* hover加深阴影 */
+        }
+        /* 固定图片尺寸，优化显示 */
+        .resource-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            border: 1px solid #eee; /* 轻微边框，提升图片质感 */
+        }
+        /* 按钮样式（优化交互） */
+        .action-btn {
+            padding: 0.8rem 2rem;
+            background-color: #165DFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .action-btn:hover {
+            background-color: #0E42D2;
+            transform: scale(1.05); /* 轻微放大 */
+        }
+
+        /* 联系方式样式（核心修改：背景改为透明） */
+        .contact {
+            text-align: center;
+            margin: 3rem 0 1rem 0;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 600;
+            background-color: transparent; /* 移除白色背景，改为透明 */
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        /* 注意提示语样式（核心修改：背景改为透明） */
+        .notice {
+            text-align: center;
+            font-size: 1rem;
+            color: #dc2626;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: transparent; /* 移除浅红背景，改为透明 */
+            border-radius: 6px;
+            border: none; /* 移除边框 */
+            line-height: 1.5; /* 优化文字行高 */
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 800px;
+        }
+
+        /* 页面标题样式统一（核心修改：背景改为透明） */
+        .page-container h1 {
+            text-align: center;
+            color: #165DFF;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            background-color: transparent; /* 移除白色背景，改为透明 */
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="nav-bar">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <button class="nav-btn active" data-page="software">软件库</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-btn" data-page="movie">影视资源</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-btn" data-page="music">其他资源</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-btn" data-page="tool">工具</button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- 软件库页面 -->
+    <div class="page-container active" id="software-page">
+        <h1>JYH软件库</h1>
+        <div class="resource-grid">
+            <div class="resource-card">
+                <img class="resource-img" src="image/software1.jpg" alt="软件1封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/igaYv2xczmwh'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/software2.jpg" alt="软件2封面">
+                <button class="action-btn" onclick="window.location.href='https://google.com/'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/software3.jpg" alt="软件3封面">
+                <button class="action-btn" onclick="window.location.href='https://google.com/'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/software4.jpg" alt="软件4封面">
+                <button class="action-btn" onclick="window.location.href='https://google.com/'">下载</button>
+            </div>
+        </div>
+        <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
+        <div class="notice">注意：本网站内容均来自网络，仅测试学习使用，不进行任何形式的盈利及商业活动，且源代码已经开源</div>
+    </div>
+
+    <!-- 影视页面 -->
+    <div class="page-container" id="movie-page">
+        <h1>影视资源</h1>
+        <div class="resource-grid">
+            <div class="resource-card">
+                <img class="resource-img" src="image/movie1.jpg" alt="影视1封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ilYv03303ndg'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/movie2.jpg" alt="影视2封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ieAQM2xkfctc'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/movie3.jpg" alt="影视3封面">
+                <button class="action-btn" onclick="window.location.href='https://google.com/'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/movie4.jpg" alt="影视4封面">
+                <button class="action-btn" onclick="window.location.href='https://google.com/'">下载</button>
+            </div>
+        </div>
+        <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
+        <div class="notice">注意：本网站内容均来自网络，仅测试学习使用，不进行任何形式的盈利及商业活动，且源代码已经开源</div>
+    </div>
+
+    <!-- 其他资源页面 -->
+    <div class="page-container" id="music-page">
+        <h1>其他资源</h1>
+        <div class="resource-grid">
+            <div class="resource-card">
+                <img class="resource-img" src="image/music1.jpg" alt="音乐1封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iTa6H2rqff5g'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/music2.jpg" alt="音乐2封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iZF982rqn5cb'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/music3.jpg" alt="音乐3封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ifQo12w6o56b'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/music4.jpg" alt="音乐4封面">
+                <button class="action-btn" onclick="window.location.href='https://google.com/'">下载</button>
+            </div>
+        </div>
+        <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
+        <div class="notice">注意：本网站内容均来自网络，仅测试学习使用，不进行任何形式的盈利及商业活动，且源代码已经开源</div>
+    </div>
+
+    <!-- 工具页面 -->
+    <div class="page-container" id="tool-page">
+        <h1>工具</h1>
+        <div class="resource-grid">
+            <div class="resource-card">
+                <img class="resource-img" src="image/tool1.jpg" alt="工具1封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ib1Ga2wadrqb'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/tool2.jpg" alt="工具2封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iFzan2s5sotc'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/tool3.jpg" alt="工具3封面">
+                <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iHaef2rszwwh'">下载</button>
+            </div>
+            <div class="resource-card">
+                <img class="resource-img" src="image/tool4.jpg" alt="工具4封面">
+                <button class="action-btn" onclick="window.location.href='https://google.com/'">下载</button>
+            </div>
+        </div>
+        <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
+        <div class="notice">注意：本网站内容均来自网络，仅测试学习使用，不进行任何形式的盈利及商业活动，且源代码已经开源</div>
+    </div>
+
+    <script>
+        // 导航栏切换逻辑（优化稳定性）
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const pageContainers = document.querySelectorAll('.page-container');
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 移除所有激活状态
+                navBtns.forEach(b => b.classList.remove('active'));
+                pageContainers.forEach(page => page.classList.remove('active'));
+                
+                // 给当前按钮和对应页面添加激活状态
+                btn.classList.add('active');
+                const targetPageId = `${btn.dataset.page}-page`;
+                const targetPage = document.getElementById(targetPageId);
+                if (targetPage) { // 增加容错，避免页面不存在报错
+                    targetPage.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
