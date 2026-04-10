@@ -13,7 +13,7 @@
         }
 
         html {
-            scroll-behavior: smooth; /* 新增：平滑滚动 */
+            scroll-behavior: smooth;
         }
 
         body {
@@ -21,7 +21,7 @@
             background-size: cover;
             position: relative;
             min-height: 100vh;
-            overflow-y: auto; /* 新增：确保可滚动 */
+            overflow-y: auto;
         }
 
         body::before {
@@ -75,7 +75,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
-            min-height: calc(100vh - 80px); /* 新增 */
+            min-height: calc(100vh - 80px);
         }
 
         .page-container.active {
@@ -142,6 +142,27 @@
             color: #165DFF;
             margin-bottom: 2rem;
         }
+
+        /* 弹窗样式 */
+        #downloadModal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        #downloadModal .modal-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            margin: 15% auto;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -161,83 +182,154 @@
     <h1>JYH软件库</h1>
     <div class="resource-grid">
 
-        <!-- 原4 + 新增4 -->
-        <div class="resource-card"><img class="resource-img" src="image/software1.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/software2.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/software3.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/software4.jpg"><button class="action-btn">下载</button></div>
+        <div class="resource-card">
+            <img class="resource-img" src="image/software1.jpg">
+            <button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iREPl3iskmsf')">下载</button>
+        </div>
 
-        <div class="resource-card"><img class="resource-img" src="image/software5.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/software6.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/software7.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/software8.jpg"><button class="action-btn">下载</button></div>
+        <div class="resource-card">
+            <img class="resource-img" src="image/software2.jpg">
+            <button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iDb3O3iskq2d')">下载</button>
+        </div>
+
+        <div class="resource-card">
+            <img class="resource-img" src="image/software3.jpg">
+            <button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/i9Hkw3kcnufe')">下载</button>
+        </div>
+
+        <div class="resource-card">
+            <img class="resource-img" src="image/software4.jpg">
+            <button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iFB9u3kcdire')">下载</button>
+        </div>
+
+        <div class="resource-card">
+            <img class="resource-img" src="image/software5.jpg">
+            <button class="action-btn" onclick="confirmDownload('#')">下载</button>
+        </div>
+
+        <div class="resource-card">
+            <img class="resource-img" src="image/software6.jpg">
+            <button class="action-btn" onclick="confirmDownload('#')">下载</button>
+        </div>
+
+        <div class="resource-card">
+            <img class="resource-img" src="image/software7.jpg">
+            <button class="action-btn" onclick="confirmDownload('#')">下载</button>
+        </div>
+
+        <div class="resource-card">
+            <img class="resource-img" src="image/software8.jpg">
+            <button class="action-btn" onclick="confirmDownload('#')">下载</button>
+        </div>
 
     </div>
-    <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
-    <div class="notice">注意：仅供学习使用</div>
 </div>
 
 <!-- 影视 -->
 <div class="page-container" id="movie-page">
     <h1>影视资源</h1>
-    <div class="resource-grid">
 
-        <div class="resource-card"><img class="resource-img" src="image/movie1.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/movie2.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/movie3.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/movie4.jpg"><button class="action-btn">下载</button></div>
+<div class="resource-card">
+<img class="resource-img" src="image/movie1.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iVGuS3m1y3pe')">下载</button>
+</div>
 
-        <div class="resource-card"><img class="resource-img" src="image/movie5.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/movie6.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/movie7.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/movie8.jpg"><button class="action-btn">下载</button></div>
+<div class="resource-card">
+<img class="resource-img" src="image/movie2.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/ieAQM2xkfctc')">下载</button>
+</div>
 
-    </div>
-    <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
-    <div class="notice">注意：仅供学习使用</div>
+<div class="resource-card">
+<img class="resource-img" src="image/movie3.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/idgPV3m1wtve')">下载</button>
+</div>
+
+<div class="resource-card">
+<img class="resource-img" src="image/movie4.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/ikfwQ3m8rj8d')">下载</button>
+</div>
+
 </div>
 
 <!-- 其他 -->
 <div class="page-container" id="music-page">
     <h1>其他资源</h1>
-    <div class="resource-grid">
 
-        <div class="resource-card"><img class="resource-img" src="image/music1.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/music2.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/music3.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/music4.jpg"><button class="action-btn">下载</button></div>
+<div class="resource-card">
+<img class="resource-img" src="image/music1.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iTa6H2rqff5g')">下载</button>
+</div>
 
-        <div class="resource-card"><img class="resource-img" src="image/music5.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/music6.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/music7.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/music8.jpg"><button class="action-btn">下载</button></div>
+<div class="resource-card">
+<img class="resource-img" src="image/music2.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iZF982rqn5cb')">下载</button>
+</div>
 
-    </div>
-    <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
-    <div class="notice">注意：仅供学习使用</div>
+<div class="resource-card">
+<img class="resource-img" src="image/music3.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/ifQo12w6o56b')">下载</button>
+</div>
+
+<div class="resource-card">
+<img class="resource-img" src="image/music4.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iKF923m85ukj')">下载</button>
+</div>
+
 </div>
 
 <!-- 工具 -->
 <div class="page-container" id="tool-page">
     <h1>工具</h1>
-    <div class="resource-grid">
 
-        <div class="resource-card"><img class="resource-img" src="image/tool1.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/tool2.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/tool3.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/tool4.jpg"><button class="action-btn">下载</button></div>
+<div class="resource-card">
+<img class="resource-img" src="image/tool1.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/ib1Ga2wadrqb')">下载</button>
+</div>
 
-        <div class="resource-card"><img class="resource-img" src="image/tool5.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/tool6.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/tool7.jpg"><button class="action-btn">下载</button></div>
-        <div class="resource-card"><img class="resource-img" src="image/tool8.jpg"><button class="action-btn">下载</button></div>
+<div class="resource-card">
+<img class="resource-img" src="image/tool2.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iFzan2s5sotc')">下载</button>
+</div>
 
+<div class="resource-card">
+<img class="resource-img" src="image/tool3.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/iHaef2rszwwh')">下载</button>
+</div>
+
+<div class="resource-card">
+<img class="resource-img" src="image/tool4.jpg">
+<button class="action-btn" onclick="confirmDownload('https://wwaxw.lanzouq.com/ivbFU3lbl9pg')">下载</button>
+</div>
+
+</div>
+
+<!-- 弹窗 -->
+<div id="downloadModal">
+    <div class="modal-box">
+        <p>确认下载该资源？</p>
+        <br>
+        <button onclick="doDownload()">确定</button>
+        <button onclick="closeModal()">取消</button>
     </div>
-    <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
-    <div class="notice">注意：仅供学习使用</div>
 </div>
 
 <script>
+let downloadLink = "";
+
+function confirmDownload(link){
+    downloadLink = link;
+    document.getElementById("downloadModal").style.display = "block";
+}
+
+function doDownload(){
+    window.location.href = downloadLink;
+}
+
+function closeModal(){
+    document.getElementById("downloadModal").style.display = "none";
+}
+
+/* 原导航逻辑 */
 const navBtns = document.querySelectorAll('.nav-btn');
 const pageContainers = document.querySelectorAll('.page-container');
 
@@ -252,7 +344,7 @@ navBtns.forEach(btn => {
             targetPage.classList.add('active');
         }
 
-        window.scrollTo({ top: 0, behavior: 'smooth' }); /* 新增 */
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
 </script>
