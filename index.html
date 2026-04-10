@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资源导航站</title>
+    <title>资源导航站 - 增强版</title>
     <style>
+        /* 全局样式优化 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft Yahei", Arial, sans-serif;
+            font-family: "Microsoft Yahei", "PingFang SC", Arial, sans-serif;
+            scroll-behavior: smooth; /* 让滚动更平滑 */
         }
-
-        html {
-            scroll-behavior: smooth; /* 新增：平滑滚动 */
-        }
-
+        
         body {
             background: url("image/bg.jpg") no-repeat center center fixed;
             background-size: cover;
             position: relative;
             min-height: 100vh;
-            overflow-y: auto; /* 新增：确保可滚动 */
+            overflow-y: auto; /* 确保纵向滚动 */
         }
 
         body::before {
@@ -35,17 +33,21 @@
             z-index: -1;
         }
 
+        /* 导航栏固定在顶部 */
         .nav-bar {
             background-color: #165DFF;
             padding: 1rem 0;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .nav-list {
             list-style: none;
             display: flex;
             justify-content: center;
-            gap: 3rem;
+            gap: 2rem;
             flex-wrap: wrap;
         }
 
@@ -53,253 +55,227 @@
             background: none;
             border: none;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 4px;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: all 0.3s;
         }
 
         .nav-item button:hover, .nav-item button.active {
             background-color: #0E42D2;
             transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
+        /* 页面容器 */
         .page-container {
             max-width: 1200px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 1rem;
             display: none;
-            background-color: transparent;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            min-height: calc(100vh - 80px); /* 新增 */
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .page-container.active {
             display: block;
         }
 
+        .page-title {
+            text-align: center;
+            color: #165DFF;
+            margin-bottom: 2.5rem;
+            font-size: 2rem;
+        }
+
+        /* 资源网格：自动适应列数 */
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 2rem;
-            margin: 2rem 0;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 3rem;
         }
 
         .resource-card {
-            background-color: transparent;
-            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.5); /* 半透明卡片感 */
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .resource-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
         .resource-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 4px;
-            margin-bottom: 1rem;
+            width: 100%;
+            height: 150px;
+            border-radius: 8px;
+            margin-bottom: 1.2rem;
             object-fit: cover;
-            border: 1px solid #eee;
+            background-color: #f0f2f5;
         }
 
         .action-btn {
-            padding: 0.8rem 2rem;
+            width: 80%;
+            padding: 0.7rem;
             background-color: #165DFF;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
         }
 
         .action-btn:hover {
             background-color: #0E42D2;
         }
 
-        .contact {
+        /* 页脚信息 */
+        .footer-info {
+            max-width: 800px;
+            margin: 4rem auto 2rem auto;
             text-align: center;
-            margin: 3rem 0 1rem 0;
+        }
+
+        .contact {
+            color: #4E5969;
+            margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .notice {
-            text-align: center;
-            color: red;
-            margin-bottom: 2rem;
-        }
-
-        .page-container h1 {
-            color: #165DFF;
-            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #F53F3F;
+            line-height: 1.6;
+            padding: 1rem;
+            border-top: 1px solid #eee;
         }
     </style>
 </head>
-
 <body>
 
-<nav class="nav-bar">
-    <ul class="nav-list">
-        <li class="nav-item"><button class="nav-btn active" data-page="software">软件库</button></li>
-        <li class="nav-item"><button class="nav-btn" data-page="movie">影视资源</button></li>
-        <li class="nav-item"><button class="nav-btn" data-page="music">其他资源</button></li>
-        <li class="nav-item"><button class="nav-btn" data-page="tool">工具</button></li>
-    </ul>
-</nav>
+    <nav class="nav-bar">
+        <ul class="nav-list">
+            <li class="nav-item"><button class="nav-btn active" data-page="software">软件库</button></li>
+            <li class="nav-item"><button class="nav-btn" data-page="movie">影视资源</button></li>
+            <li class="nav-item"><button class="nav-btn" data-page="music">其他资源</button></li>
+            <li class="nav-item"><button class="nav-btn" data-page="tool">工具箱</button></li>
+        </ul>
+    </nav>
 
-<!-- 软件 -->
-<!-- 只展示关键修改部分，其它保持你原样 -->
-
-<!-- 软件库页面 -->
-<div class="page-container active" id="software-page">
-    <h1>JYH软件库</h1>
-    <div class="resource-grid">
-        <!-- 原4个（已填链接） -->
-        <div class="resource-card">
-            <img class="resource-img" src="image/software1.jpg">
-            <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iREPl3iskmsf'">下载</button>
+    <div class="page-container active" id="software-page">
+        <h1 class="page-title">JYH 软件库</h1>
+        <div class="resource-grid">
+            <div class="resource-card"><img class="resource-img" src="image/software1.jpg" alt="1"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iREPl3iskmsf'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/software2.jpg" alt="2"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iDb3O3iskq2d'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/software3.jpg" alt="3"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/i9Hkw3kcnufe'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/software4.jpg" alt="4"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iFB9u3kcdire'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/software5.jpg" alt="5"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/software6.jpg" alt="6"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/software7.jpg" alt="7"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/software8.jpg" alt="8"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
         </div>
-        <div class="resource-card">
-            <img class="resource-img" src="image/software2.jpg">
-            <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iDb3O3iskq2d'">下载</button>
-        </div>
-        <div class="resource-card">
-            <img class="resource-img" src="image/software3.jpg">
-            <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/i9Hkw3kcnufe'">下载</button>
-        </div>
-        <div class="resource-card">
-            <img class="resource-img" src="image/software4.jpg">
-            <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iFB9u3kcdire'">下载</button>
-        </div>
-
-        <!-- 新增4个（你自己填链接） -->
-        <div class="resource-card">
-            <img class="resource-img" src="image/software5.jpg">
-            <button class="action-btn" onclick="window.location.href='#'">下载</button>
-        </div>
-        <div class="resource-card">
-            <img class="resource-img" src="image/software6.jpg">
-            <button class="action-btn" onclick="window.location.href='#'">下载</button>
-        </div>
-        <div class="resource-card">
-            <img class="resource-img" src="image/software7.jpg">
-            <button class="action-btn" onclick="window.location.href='#'">下载</button>
-        </div>
-        <div class="resource-card">
-            <img class="resource-img" src="image/software8.jpg">
-            <button class="action-btn" onclick="window.location.href='#'">下载</button>
+        <div class="footer-info">
+            <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
+            <div class="notice">注意：本网站内容均来自网络，仅测试学习使用，不进行任何形式的盈利及商业活动。</div>
         </div>
     </div>
-</div>
 
+    <div class="page-container" id="movie-page">
+        <h1 class="page-title">影视资源</h1>
+        <div class="resource-grid">
+            <div class="resource-card"><img class="resource-img" src="image/movie1.jpg" alt="1"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iVGuS3m1y3pe'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/movie2.jpg" alt="2"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ieAQM2xkfctc'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/movie3.jpg" alt="3"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/idgPV3m1wtve'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/movie4.jpg" alt="4"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ikfwQ3m8rj8d'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/movie5.jpg" alt="5"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/movie6.jpg" alt="6"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/movie7.jpg" alt="7"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/movie8.jpg" alt="8"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+        </div>
+        <div class="footer-info">
+            <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
+            <div class="notice">注意：本网站内容均来自网络，仅供交流学习。</div>
+        </div>
     </div>
-    <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
-    <div class="notice">注意：仅供学习使用</div>
-</div>
 
-<!-- 影视 -->
-<div class="page-container" id="movie-page">
-    <h1>影视资源</h1>
-   <div class="resource-card">
-    <img class="resource-img" src="image/movie1.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iVGuS3m1y3pe'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/movie2.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ieAQM2xkfctc'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/movie3.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/idgPV3m1wtve'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/movie4.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ikfwQ3m8rj8d'">下载</button>
-</div>
-
+    <div class="page-container" id="music-page">
+        <h1 class="page-title">其他资源</h1>
+        <div class="resource-grid">
+            <div class="resource-card"><img class="resource-img" src="image/music1.jpg" alt="1"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iTa6H2rqff5g'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/music2.jpg" alt="2"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iZF982rqn5cb'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/music3.jpg" alt="3"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ifQo12w6o56b'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/music4.jpg" alt="4"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iKF923m85ukj'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/music5.jpg" alt="5"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/music6.jpg" alt="6"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/music7.jpg" alt="7"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/music8.jpg" alt="8"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+        </div>
+        <div class="footer-info">
+            <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
+            <div class="notice">注意：所有资源均来自开源社区，严禁商用。</div>
+        </div>
     </div>
-    <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
-    <div class="notice">注意：仅供学习使用</div>
-</div>
 
-<!-- 其他 -->
-<div class="page-container" id="music-page">
-    <h1>其他资源</h1>
-   <div class="resource-card">
-    <img class="resource-img" src="image/music1.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iTa6H2rqff5g'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/music2.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iZF982rqn5cb'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/music3.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ifQo12w6o56b'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/music4.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iKF923m85ukj'">下载</button>
-</div>
-
+    <div class="page-container" id="tool-page">
+        <h1 class="page-title">常用工具</h1>
+        <div class="resource-grid">
+            <div class="resource-card"><img class="resource-img" src="image/tool1.jpg" alt="1"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ib1Ga2wadrqb'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/tool2.jpg" alt="2"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iFzan2s5sotc'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/tool3.jpg" alt="3"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iHaef2rszwwh'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/tool4.jpg" alt="4"><button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ivbFU3lbl9pg'">下载</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/tool5.jpg" alt="5"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/tool6.jpg" alt="6"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/tool7.jpg" alt="7"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+            <div class="resource-card"><img class="resource-img" src="image/tool8.jpg" alt="8"><button class="action-btn" onclick="alert('即将上线')">暂未开放</button></div>
+        </div>
+        <div class="footer-info">
+            <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
+            <div class="notice">注意：工具仅供测试，请在24小时内删除。</div>
+        </div>
     </div>
-    <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
-    <div class="notice">注意：仅供学习使用</div>
-</div>
 
-<!-- 工具 -->
-<div class="page-container" id="tool-page">
-    <h1>工具</h1>
-  <div class="resource-card">
-    <img class="resource-img" src="image/tool1.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ib1Ga2wadrqb'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/tool2.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iFzan2s5sotc'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/tool3.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/iHaef2rszwwh'">下载</button>
-</div>
-<div class="resource-card">
-    <img class="resource-img" src="image/tool4.jpg">
-    <button class="action-btn" onclick="window.location.href='https://wwaxw.lanzouq.com/ivbFU3lbl9pg'">下载</button>
-</div>
+    <script>
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const pageContainers = document.querySelectorAll('.page-container');
 
-    </div>
-    <div class="contact">联系方式：vswvqrjxur@rommiui.com</div>
-    <div class="notice">注意：仅供学习使用</div>
-</div>
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 1. 更新按钮状态
+                navBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
 
-<script>
-const navBtns = document.querySelectorAll('.nav-btn');
-const pageContainers = document.querySelectorAll('.page-container');
+                // 2. 切换页面显示
+                const targetId = `${btn.dataset.page}-page`;
+                pageContainers.forEach(page => {
+                    page.classList.remove('active');
+                    if(page.id === targetId) {
+                        page.classList.add('active');
+                    }
+                });
 
-navBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        navBtns.forEach(b => b.classList.remove('active'));
-        pageContainers.forEach(page => page.classList.remove('active'));
-
-        btn.classList.add('active');
-        const targetPage = document.getElementById(btn.dataset.page + "-page");
-        if (targetPage) {
-            targetPage.classList.add('active');
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' }); /* 新增 */
-    });
-});
-</script>
-
+                // 3. 核心：切换页面时自动回到顶部，方便滑动体验
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
